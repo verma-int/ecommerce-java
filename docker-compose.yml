@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:13.15 # Ensure this matches the version you want
+    environment:
+      POSTGRES_DB: ecommerce
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data # Ensure this volume is properly managed
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ecommerce
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+# version: "3"
+# services:
+#   db:
+#     image: postgres:13.15 # Ensure this matches the version you want
+#     restart: always
+#     environment:
+#       POSTGRES_DB: ecommerce
+#       POSTGRES_USER: user
+#       POSTGRES_PASSWORD: password
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - ./pgdata:/var/lib/postgresql/data # Ensure this volume is properly managed
+
